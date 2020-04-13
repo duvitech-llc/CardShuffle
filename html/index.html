@@ -39,7 +39,7 @@
                 <span class="card__suit card__suit--bottom">{{ card.suit }}</span>
             </div>
         </transition-group> 
-        <br >
+        
         <div class="main-buttons">
             <button v-if="isDeckShuffled" @click="dealCards" class="button is-primary is-outlined">
                 Deal
@@ -50,6 +50,10 @@
     
 
     <script>
+        var getCardString = function(_card){
+            return "" + _card.rank + "" + _card.suit;
+        };
+
         new Vue({
             el: '#app',
             data: {
@@ -109,12 +113,12 @@
                         console.log("DealCards");
                         this.isDeckShuffled = false;
 
-                        console.log("player1: " + this.cards[0].rank + this.cards[0].suit +" " + this.cards[2].rank + this.cards[2].suit);
-                        console.log("player2: " + this.cards[1].rank + this.cards[1].suit +" " + this.cards[3].rank + this.cards[3].suit);
+                        console.log("player1: " + getCardString(this.cards[0]) + " " + getCardString(this.cards[2]));
+                        console.log("player2: " + getCardString(this.cards[1]) + " " + getCardString(this.cards[3]));
                         
-                        console.log("Flop: " + this.cards[5].rank + this.cards[5].suit +  " " + this.cards[6].rank + this.cards[6].suit + " " + this.cards[7].rank + this.cards[7].suit);
-                        console.log("Turn: " + this.cards[9].rank + this.cards[9].suit);
-                        console.log("River: " + this.cards[11].rank + this.cards[11].suit);
+                        console.log("Flop: " + getCardString(this.cards[5]) + " " + getCardString(this.cards[6]) + " " + getCardString(this.cards[7]));
+                        console.log("Turn: " + getCardString(this.cards[9]));
+                        console.log("River: " + getCardString(this.cards[11]));
 
                     }else{
                         console.log("Must Shuffle Deck First");
