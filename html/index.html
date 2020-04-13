@@ -38,9 +38,33 @@
                 <span class="card__number">{{ card.rank }} </span>
                 <span class="card__suit card__suit--bottom">{{ card.suit }}</span>
             </div>
-        </transition-group>
+        </transition-group> 
+        <br >
+        <div class="main-buttons">
+            <button v-if="isDeckShuffled" @click="dealCards" class="button is-primary is-outlined">
+                Deal
+            </button>
+        </div>   
+        
+        <transition-group tag="div" class="deck">
+            <div v-for="card in player1.hand" :key="card.id" class="card" :class="suitColor[card.suit]">
+                <span class="card__suit card__suit--top">{{ card.suit }}</span>
+                <span class="card__number">{{ card.rank }} </span>
+                <span class="card__suit card__suit--bottom">{{ card.suit }}</span>
+            </div>
+        </transition-group> 
+
+        
+        <transition-group tag="div" class="deck">
+            <div v-for="card in player2.hand" :key="card.id" class="card" :class="suitColor[card.suit]">
+                <span class="card__suit card__suit--top">{{ card.suit }}</span>
+                <span class="card__number">{{ card.rank }} </span>
+                <span class="card__suit card__suit--bottom">{{ card.suit }}</span>
+            </div>
+        </transition-group> 
     </div>
-    </div>
+        
+    
 
     <script>
         new Vue({
@@ -59,6 +83,12 @@
                 shuffleTypes: ['Slow', 'Medium', 'Fast'],
                 isDeckShuffled: false,
                 shuffleCount: 0,
+                player1: {
+                    hand: []
+                },
+                player2: {
+                    hand: []
+                }
             },
             created() {
                 this.displayInitialDeck();
@@ -95,9 +125,39 @@
                     this.isDeckShuffled = true;
                     this.shuffleCount = this.shuffleCount + 1;
                 },
+                dealCards(){
+                    if(this.isDeckShuffled){
+                        console.log("DealCards");
+                        this.isDeckShuffled = false;
+
+                        this.player1.hand = [];
+                        this.player2.hand = [];
+
+                        this.player1.hand.push(this.cards[0]);
+                        this.player1.hand.push(this.cards[2]);
+                        
+                        this.player2.hand.push(this.cards[1]);
+                        this.player2.hand.push(this.cards[3]);
+
+                        console.log("player1: " + getCardString(this.player1.hand[0])+" " + getCardString(this.player1.hand[1]));
+                        console.log("player2: " + getCardString(this.player2.hand[0])+" " + getCardString(this.player2.hand[1]));
+                        
+                        console.log("Flop: " + getCardString(this.cards[5]) +  " " + getCardString(this.cards[6]) + " " + getCardString(this.cards[7]));
+                        console.log("Turn: " + getCardString(this.cards[9]));
+                        console.log("River: " + getCardString(this.cards[11]));
+
+                    }else{
+                        console.log("Must Shuffle Deck First");
+                    }
+                }
             },
         });
 
+
+        var getCardString = function(mCard){
+
+            return "" + mCard.rank + mCard.suit;
+        }
     </script>
 </body>
 
