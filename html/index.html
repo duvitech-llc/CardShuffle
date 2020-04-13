@@ -38,9 +38,16 @@
                 <span class="card__number">{{ card.rank }} </span>
                 <span class="card__suit card__suit--bottom">{{ card.suit }}</span>
             </div>
-        </transition-group>
+        </transition-group> 
+        <br >
+        <div class="main-buttons">
+            <button v-if="isDeckShuffled" @click="dealCards" class="button is-primary is-outlined">
+                Deal
+            </button>
+        </div>   
     </div>
-    </div>
+        
+    
 
     <script>
         new Vue({
@@ -59,6 +66,8 @@
                 shuffleTypes: ['Slow', 'Medium', 'Fast'],
                 isDeckShuffled: false,
                 shuffleCount: 0,
+                player1: [],
+                player2: []
             },
             created() {
                 this.displayInitialDeck();
@@ -95,6 +104,22 @@
                     this.isDeckShuffled = true;
                     this.shuffleCount = this.shuffleCount + 1;
                 },
+                dealCards(){
+                    if(this.isDeckShuffled){
+                        console.log("DealCards");
+                        this.isDeckShuffled = false;
+
+                        console.log("player1: " + this.cards[0].rank + this.cards[0].suit +" " + this.cards[2].rank + this.cards[2].suit);
+                        console.log("player2: " + this.cards[1].rank + this.cards[1].suit +" " + this.cards[3].rank + this.cards[3].suit);
+                        
+                        console.log("Flop: " + this.cards[5].rank + this.cards[5].suit +  " " + this.cards[6].rank + this.cards[6].suit + " " + this.cards[7].rank + this.cards[7].suit);
+                        console.log("Turn: " + this.cards[9].rank + this.cards[9].suit);
+                        console.log("River: " + this.cards[11].rank + this.cards[11].suit);
+
+                    }else{
+                        console.log("Must Shuffle Deck First");
+                    }
+                }
             },
         });
 
