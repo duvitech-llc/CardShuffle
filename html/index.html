@@ -52,7 +52,7 @@
     <script>
         var getCardString = function(_card){
             return "" + _card.rank + "" + _card.suit;
-        };
+        }
 
         new Vue({
             el: '#app',
@@ -68,10 +68,21 @@
                 },
                 shuffleSpeed: 'shuffleMedium',
                 shuffleTypes: ['Slow', 'Medium', 'Fast'],
+                cardIndex: 0,
                 isDeckShuffled: false,
                 shuffleCount: 0,
-                player1: [],
-                player2: []
+                board: {
+                    cards: [],
+                    burn: []
+                },
+                player1: {
+                    name: 'player1',
+                    hand: []
+                },
+                player2: {
+                    name: 'player2',
+                    hand: []
+                }
             },
             created() {
                 this.displayInitialDeck();
@@ -95,6 +106,7 @@
 
                     this.isDeckShuffled = false;
                     this.shuffleCount = 0;
+                    this.cardIndex = 0;
                 },
                 shuffleDeck() {
                     console.log("SHUFFLE");
@@ -106,19 +118,57 @@
                         Vue.set(this.cards, randomIndex, temp);
                     }
                     this.isDeckShuffled = true;
+                    this.cardIndex = 0;
                     this.shuffleCount = this.shuffleCount + 1;
+                },
+                getCard(){
+                    let currentCardIndex = this.cardIndex;
+                    this.cardIndex++;
+                    return this.cards[currentCardIndex];
                 },
                 dealCards(){
                     if(this.isDeckShuffled){
                         console.log("DealCards");
                         this.isDeckShuffled = false;
 
-                        console.log("player1: " + getCardString(this.cards[0]) + " " + getCardString(this.cards[2]));
-                        console.log("player2: " + getCardString(this.cards[1]) + " " + getCardString(this.cards[3]));
+                        // reset board and hands
+                        this.board.cards = [];
+                        this.board.burn = [];
                         
-                        console.log("Flop: " + getCardString(this.cards[5]) + " " + getCardString(this.cards[6]) + " " + getCardString(this.cards[7]));
-                        console.log("Turn: " + getCardString(this.cards[9]));
-                        console.log("River: " + getCardString(this.cards[11]));
+                        this.player1.hand = [];
+                        this.player2.hand = [];
+
+                        this.player1.hand.push(this.getCard());
+                        this.player2.hand.push(this.getCard());
+                        this.player1.hand.push(this.getCard());
+                        this.player2.hand.push(this.getCard());
+
+                        console.log("" + this.player1.name + ": " + getCardString(this.player1.hand[0]) + " " + getCardString(this.player1.hand[1]));
+                        console.log("" + this.player2.name + ": " + getCardString(this.player2.hand[0]) + " " + getCardString(this.player2.hand[1]));
+                        
+                        // burn card
+                        this.board.burn.push(this.getCard());
+
+                        // FLOP                        
+                        this.board.cards.push(this.getCard());
+                        this.board.cards.push(this.getCard());
+                        this.board.cards.push(this.getCard());
+
+                        // burn card
+                        this.board.burn.push(this.getCard());
+
+                        // TURN 
+                        this.board.cards.push(this.getCard());
+                        
+                        // burn card
+                        this.board.burn.push(this.getCard());
+
+                        // RIVER
+                        this.board.cards.push(this.getCard());
+
+                        console.log("Flop: " + getCardString(this.board.cards[0]) + " " + getCardString(this.board.cards[1]) + " " + getCardString(this.board.cards[2]));
+                        console.log("Turn: " + getCardString(this.board.cards[3]));
+                        console.log("River: " + getCardString(this.board.cards[4]));
 
                     }else{
                         console.log("Must Shuffle Deck First");
